@@ -4,7 +4,7 @@ from weapon import Weapon
 from battle import battle, choose_enemy
 from storage import save_game, load_game
 
-FILEPATH = r"rpg/data.json"
+FILEPATH = r"data.json"
         
 def main():
     vlad = Player("Vlad", 100, 15)
@@ -41,7 +41,7 @@ def main():
         elif num == "2":
             vlad.show_stats()
         elif num == "3":
-            vlad.heal()
+            vlad.rest()
         elif num == "4":
             save_game(vlad, FILEPATH)
             print("Saved!")

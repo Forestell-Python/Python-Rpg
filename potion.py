@@ -8,7 +8,6 @@ class Potion(Item):
 
     def use(self, player):
         if self.effect_type == "heal":
-            self.heal(player)
-
-    def heal(self, player):
-        player.heal(self.value)
+            player.heal(self.value)
+        else:
+            print(f"Unknown effect: {self.effect_type}")

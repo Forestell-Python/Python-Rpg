@@ -1,4 +1,6 @@
 from entity import Entity
+from potion import Potion
+from weapon import Weapon
 
 class Player(Entity):
     def __init__(self, name, max_hp, attack, money=0):
@@ -67,17 +69,25 @@ class Player(Entity):
             "exp_to_next": self.exp_to_next
         }
 
+    def pick_up(self, item):
+        self.inventory.append(item)
+        print(f"You picked up {item.name}")
+
     def change_weapon(self):
-        if len(self.inventory) == 0:
-            print("The inventory is empty")
+
+        weapons = [item for item in self.inventory if isinstance(item, Weapon)]
+
+        if not weapons:
             return
-        for i, weapon in enumerate(self.inventory, start=1):
+
+        for i, weapon in enumerate(weapons, start=1):
             print(f"{i}: {weapon.name}")
+        
         while True:
             try:
                 new_weapon = int(input("Choose a weapon (0 to quit): "))
 
-                if 0 <= new_weapon <= len(self.inventory):
+                if 0 <= new_weapon <= len(weapons):
                     break
 
                 print("Enter a number that is in a list above or 0")
@@ -86,5 +96,32 @@ class Player(Entity):
         if new_weapon == 0:
             print(f"There is still {self.weapon.name}")
             return
-        self.weapon = self.inventory[new_weapon - 1]
+        self.weapon = weapons[new_weapon - 1]
         print(f"You chose: {self.weapon.name}")
+
+    def use_potion(self):
+        potions = [item for item in self.inventory if isinstance(item, Potion)]
+
+        if not potions:
+            print("No potions")
+            return None
+
+        for i, potion in enumerate(potions, start=1):
+            print(f"{i}: {potion.name}")
+
+        while True:
+            try:
+                choice = int(input("Choose a potion (0 to quit): "))
+                if 0 <= choice <= len(potions):
+                    break
+                print("Invalid number")
+            except ValueError:
+                print("Write a number")
+
+        if choice == 0:
+            return None
+
+        potion = potions[choice - 1]
+        potion.use(self)
+        self.inventory.remove(potion)
+        return True
