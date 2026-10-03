@@ -1,4 +1,5 @@
 import random
+import webbrowser
 from potion import Potion
 
 def battle(player, enemy):
@@ -31,6 +32,9 @@ def battle(player, enemy):
             
             for item in player_loot.values():
                 player.pick_up(item)
+
+            if enemy.name == "Dragon":
+                win(player)
                 
             return
         enemy.beat(player)
@@ -69,3 +73,13 @@ def loot(enemymaxhp):
         loot_amount["Health Potion"] = Potion("Health Potion", "heal", random.randint(40, 80))
 
     return loot_amount
+
+def win(player):
+    print("You completed this minigame. Thank you so much")
+    choice = input("Print 'Y' if you want to see more my projects")
+    if choice.lower() == "y":
+        webbrowser.open("https://github.com/Forestell-Python")
+    else:
+        print("Find more on https://github.com/Forestell-Python")
+    print("Bye!")
+    player.hp = 0
